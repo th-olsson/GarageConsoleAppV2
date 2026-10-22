@@ -9,7 +9,7 @@ namespace GarageConsoleApp.UI.Menus
         {
             // Kept in memory when going back to this menu. Null until the garage is created.
             Garage? garage = null;
-            Vehicle[] vehicles = [];
+            List<Vehicle> vehicles = [];
 
             MenuRunner.Run("Garage Manager", "Exit", () =>
             [

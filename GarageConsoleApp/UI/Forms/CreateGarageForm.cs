@@ -8,7 +8,7 @@ namespace GarageConsoleApp.UI.Forms
         private const int MinCapacity = 1;
         private const int MaxCapacity = 100;
 
-        internal static Garage Run(Vehicle[] vehicles)
+        internal static Garage Run(List<Vehicle> vehicles)
         {
             Title("Create garage");
             string name = ReadString("What do you want to call your garage: ");
@@ -23,7 +23,7 @@ namespace GarageConsoleApp.UI.Forms
             if (selected == 1)
             {
                 int parked = Populate(garage, vehicles);
-                Text($"{parked} of {vehicles.Length} vehicles from the registry were parked.");
+                Text($"{parked} of {vehicles.Count} vehicles from the registry were parked.");
             }
 
             PressAnyKey();
@@ -31,11 +31,15 @@ namespace GarageConsoleApp.UI.Forms
         }
 
         // Parks vehicles from the registry in random order, skipping any that do not fit
-        private static int Populate(Garage garage, Vehicle[] vehicles)
+        private static int Populate(Garage garage, List<Vehicle> vehicles)
         {
             // Shuffle a copy so the registry keeps its own order
-            Vehicle[] shuffled = (Vehicle[])vehicles.Clone();
-            Random.Shared.Shuffle(shuffled);
+            List<Vehicle> shuffled = [.. vehicles];
+            for (int i = shuffled.Count - 1; i > 0; i--)
+            {
+                int j = Random.Shared.Next(i + 1);
+                (shuffled[j], shuffled[i]) = (shuffled[i], shuffled[j]);
+            }
 
             int parked = 0;
             foreach (Vehicle vehicle in shuffled)

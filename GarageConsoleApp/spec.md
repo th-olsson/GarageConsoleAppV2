@@ -15,7 +15,7 @@ Garaget måste som minimum ha:
 ## Kravspecifikation
 ### Garage
 - Klassen behöver inte ärva från någon annan klass eller implementera någon annan interface
-- [ ] Samlingen av fordon ska internt i klassen hanteras som en privat `List<Vehicle>`
+- [x] Samlingen av fordon ska internt i klassen hanteras som en privat `List<Vehicle>`
 - [x] Vid instansieringen av ett nytt garage måste kapaciteten anges som argument till konstruktorn.
 ### Vehicle
 - [x] Fordon ska implementeras som klassen Vehicle och subklasser till den
@@ -42,7 +42,7 @@ Det ska gå att
     - Alla motorcyklar som är rosa och har 3 hjul
     - Alla lastbilar
     - Alla röda fordon
-- [x] Användaren ska få feedback på att saker gått bra eller dåligt. Till exempel när vi  
+- [x] Användaren ska få feedback på att saker gått bra eller dåligt. Till exempel när vi parkerat ett fordon vill vi få en bekräftelse på att fordonet är parkerat. Om det inte går vill användaren få veta varför.
 ***
 ### Gränssnitt
 Programmet ska vara en konsolapplikation med ett textbaserat användargränssnitt.

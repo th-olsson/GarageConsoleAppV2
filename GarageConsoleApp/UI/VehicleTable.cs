@@ -5,10 +5,10 @@ namespace GarageConsoleApp.UI
 {
     internal static class VehicleTable
     {
-        internal static void Print(Vehicle[] vehicles)
+        internal static void Print(List<Vehicle> vehicles)
         {
-            string[][] rows = new string[vehicles.Length][];
-            for (int i = 0; i < vehicles.Length; i++)
+            string[][] rows = new string[vehicles.Count][];
+            for (int i = 0; i < vehicles.Count; i++)
             {
                 Vehicle v = vehicles[i];
                 rows[i] =

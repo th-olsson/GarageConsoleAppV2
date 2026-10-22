@@ -8,10 +8,10 @@ namespace GarageConsoleApp.UI.Views
         {
             Title($"Vehicle types - {garage.Name}");
 
-            (string TypeName, int Count)[] counts = garage.CountByType();
+            List<(string TypeName, int Count)> counts = garage.CountByType();
 
-            string[][] rows = new string[counts.Length][];
-            for (int i = 0; i < counts.Length; i++)
+            string[][] rows = new string[counts.Count][];
+            for (int i = 0; i < counts.Count; i++)
                 rows[i] = [counts[i].TypeName, counts[i].Count.ToString()];
 
             string[] lines = Table.Format(["Type", "Count"], rows, 1);

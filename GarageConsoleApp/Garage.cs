@@ -4,11 +4,11 @@ namespace GarageConsoleApp
 {
     internal class Garage
     {
-        private readonly Vehicle?[] _vehicles;
+        private readonly List<Vehicle> _vehicles;
         private static readonly string[] _typeNames = ["Car", "Motorcycle", "Bus", "Boat", "Airplane"];
         public string Name { get; }
         /// <summary>The number of parking spaces.</summary>
-        public int Capacity { get; }
+        public int Capacity { get; private set; }
         public int TotalUnits => ParkingUnits.FromSpaces(Capacity);
         public int UsedUnits
         {
@@ -32,7 +32,7 @@ namespace GarageConsoleApp
 
             Name = name;
             Capacity = capacity;
-            _vehicles = new Vehicle?[ParkingUnits.FromSpaces(capacity)];
+            _vehicles = [];
         }
 
         public bool IsParked(string registrationNumber) => FindIndex(registrationNumber) != -1;
@@ -42,7 +42,7 @@ namespace GarageConsoleApp
             if (index == -1)
                 return false;
 
-            _vehicles[index] = null;
+            _vehicles.RemoveAt(index);
             return true;
         }
         public ParkResult Park(Vehicle vehicle)
@@ -50,41 +50,41 @@ namespace GarageConsoleApp
             if (FindIndex(vehicle.RegistrationNumber) != -1)
                 return ParkResult.AlreadyParked;
 
-            int slot = FindFreeSlot();
-            if (slot == -1 || vehicle.SizeInUnits > FreeUnits)
+            if (vehicle.SizeInUnits > FreeUnits)
                 return ParkResult.NotEnoughSpace;
 
-            _vehicles[slot] = vehicle;
+            _vehicles.Add(vehicle);
             return ParkResult.Parked;
         }
-        public Vehicle[] GetParkedVehicles()
+        public List<Vehicle> GetParkedVehicles()
         {
-            int count = 0;
-            foreach (Vehicle? vehicle in _vehicles)
-            {
-                if (vehicle != null)
-                    count++;
-            }
+            List<Vehicle> parked = [];
 
-            Vehicle[] parked = new Vehicle[count];
-            int next = 0;
-            foreach (Vehicle? vehicle in _vehicles)
+            foreach (Vehicle vehicle in _vehicles)
             {
-                if (vehicle != null)
-                    parked[next++] = vehicle;
+                parked.Add(vehicle);
             }
 
             return parked;
         }
-        public (string TypeName, int Count)[] CountByType()
+        public List<(string TypeName, int Count)> CountByType()
         {
-            Vehicle[] parked = GetParkedVehicles();
-            var result = new (string TypeName, int Count)[_typeNames.Length];
+            List<Vehicle> parked = GetParkedVehicles();
+            List<(string TypeName, int Count)> result = [];
 
-            for (int i = 0; i < _typeNames.Length; i++)
+            foreach (string name in _typeNames)
             {
-                string name = _typeNames[i];
-                result[i] = (name, Array.FindAll(parked, v => v.TypeName == name).Length);
+                int count = 0;
+
+                foreach (Vehicle vehicle in parked)
+                {
+                    if (vehicle.TypeName == name)
+                    {
+                        count++;
+                    }
+                }
+
+                result.Add((name, count));
             }
 
             return result;
@@ -94,19 +94,23 @@ namespace GarageConsoleApp
             int index = FindIndex(registrationNumber);
             return index == -1 ? null : _vehicles[index];
         }
-        public Vehicle[] Search(VehicleFilter filter) => Array.FindAll(GetParkedVehicles(), filter.Matches);
-        private int FindFreeSlot()
+        public List<Vehicle> Search(VehicleFilter filter)
         {
-            for (int i = 0; i < _vehicles.Length; i++)
+            List<Vehicle> results = [];
+
+            foreach (Vehicle vehicle in GetParkedVehicles())
             {
-                if (_vehicles[i] == null)
-                    return i;
+                if (filter.Matches(vehicle))
+                {
+                    results.Add(vehicle);
+                }
             }
-            return -1;
+
+            return results;
         }
         private int FindIndex(string registrationNumber)
         {
-            for (int i = 0; i < _vehicles.Length; i++)
+            for (int i = 0; i < _vehicles.Count; i++)
             {
                 Vehicle? vehicle = _vehicles[i];
                 if (vehicle != null &&

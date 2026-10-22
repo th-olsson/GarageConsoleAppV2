@@ -5,11 +5,11 @@ namespace GarageConsoleApp.UI.Forms
 {
     internal static class ManageParkingForm
     {
-        internal static void Run(Garage garage, Vehicle[] vehicles)
+        internal static void Run(Garage garage, List<Vehicle> vehicles)
         {
             // Start from what is parked right now
-            bool[] isChecked = new bool[vehicles.Length];
-            for (int i = 0; i < vehicles.Length; i++)
+            bool[] isChecked = new bool[vehicles.Count];
+            for (int i = 0; i < vehicles.Count; i++)
                 isChecked[i] = garage.IsParked(vehicles[i].RegistrationNumber);
 
             string[] tableLines = BuildTable(vehicles);
@@ -28,7 +28,7 @@ namespace GarageConsoleApp.UI.Forms
                 Console.WriteLine();
 
                 Text($"    {tableLines[0]}"); // 4 spaces = width of "[x] "
-                for (int i = 0; i < vehicles.Length; i++)
+                for (int i = 0; i < vehicles.Count; i++)
                 {
                     string row = FormatRow(tableLines[i + 1], isChecked[i], garage.IsParked(vehicles[i].RegistrationNumber));
 
@@ -52,10 +52,10 @@ namespace GarageConsoleApp.UI.Forms
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.UpArrow:
-                        selected = selected == 0 ? vehicles.Length - 1 : selected - 1;
+                        selected = selected == 0 ? vehicles.Count - 1 : selected - 1;
                         break;
                     case ConsoleKey.DownArrow:
-                        selected = selected == vehicles.Length - 1 ? 0 : selected + 1;
+                        selected = selected == vehicles.Count - 1 ? 0 : selected + 1;
                         break;
                     case ConsoleKey.Spacebar:
                         isChecked[selected] = !isChecked[selected];
@@ -78,10 +78,10 @@ namespace GarageConsoleApp.UI.Forms
             Console.CursorVisible = true;
         }
 
-        private static string[] BuildTable(Vehicle[] vehicles)
+        private static string[] BuildTable(List<Vehicle> vehicles)
         {
-            string[][] rows = new string[vehicles.Length][];
-            for (int i = 0; i < vehicles.Length; i++)
+            string[][] rows = new string[vehicles.Count][];
+            for (int i = 0; i < vehicles.Count; i++)
             {
                 Vehicle vehicle = vehicles[i];
                 rows[i] =
@@ -111,10 +111,10 @@ namespace GarageConsoleApp.UI.Forms
             return $"{box} {tableLine}  {status}";
         }
 
-        private static int CountCheckedUnits(Vehicle[] vehicles, bool[] isChecked)
+        private static int CountCheckedUnits(List<Vehicle> vehicles, bool[] isChecked)
         {
             int total = 0;
-            for (int i = 0; i < vehicles.Length; i++)
+            for (int i = 0; i < vehicles.Count; i++)
             {
                 if (isChecked[i])
                     total += vehicles[i].SizeInUnits;
@@ -122,13 +122,13 @@ namespace GarageConsoleApp.UI.Forms
             return total;
         }
 
-        private static void Apply(Garage garage, Vehicle[] vehicles, bool[] isChecked)
+        private static void Apply(Garage garage, List<Vehicle> vehicles, bool[] isChecked)
         {
             Console.Clear();
             bool anyChange = false;
 
             // Remove first, so the freed space can be used by the vehicles parked next
-            for (int i = 0; i < vehicles.Length; i++)
+            for (int i = 0; i < vehicles.Count; i++)
             {
                 Vehicle vehicle = vehicles[i];
                 if (!isChecked[i] && garage.IsParked(vehicle.RegistrationNumber))
@@ -139,7 +139,7 @@ namespace GarageConsoleApp.UI.Forms
                 }
             }
 
-            for (int i = 0; i < vehicles.Length; i++)
+            for (int i = 0; i < vehicles.Count; i++)
             {
                 Vehicle vehicle = vehicles[i];
                 if (isChecked[i] && !garage.IsParked(vehicle.RegistrationNumber))

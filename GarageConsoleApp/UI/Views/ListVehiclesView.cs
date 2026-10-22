@@ -9,9 +9,9 @@ namespace GarageConsoleApp.UI.Views
         {
             Title($"Parked vehicles - {garage.Name}");
 
-            Vehicle[] parked = garage.GetParkedVehicles();
+            List<Vehicle> parked = garage.GetParkedVehicles();
 
-            if (parked.Length == 0)
+            if (parked.Count == 0)
                 Text("The garage is empty.");
             else
                 VehicleTable.Print(parked);

@@ -38,9 +38,9 @@ namespace GarageConsoleApp.UI.Forms
             }
             else
             {
-                Vehicle[] matches = garage.Search(filter);
+                List<Vehicle> matches = garage.Search(filter);
 
-                if (matches.Length == 0)
+                if (matches.Count == 0)
                 {
                     Text("No parked vehicles match your search.");
                 }
@@ -48,7 +48,7 @@ namespace GarageConsoleApp.UI.Forms
                 {
                     VehicleTable.Print(matches);
                     Console.WriteLine();
-                    Text(matches.Length == 1 ? "Found 1 vehicle." : $"Found {matches.Length} vehicles.");
+                    Text(matches.Count == 1 ? "Found 1 vehicle." : $"Found {matches.Count} vehicles.");
                 }
             }
 

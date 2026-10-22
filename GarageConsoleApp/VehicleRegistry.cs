@@ -4,9 +4,9 @@ namespace GarageConsoleApp
 {
     internal static class VehicleRegistry
     {
-        internal static Vehicle[] CreateSeed()
+        internal static List<Vehicle> CreateSeed()
         {
-            Vehicle[] vehicles =
+            List<Vehicle> vehicles =
             [
                 // Cars (default: 1 space)
                 new Car("ABC123", "Volvo V70", "Black", FuelType.Diesel),
@@ -44,11 +44,11 @@ namespace GarageConsoleApp
             return vehicles;
         }
 
-        private static void EnsureUniqueRegistrationNumbers(Vehicle[] vehicles)
+        private static void EnsureUniqueRegistrationNumbers(List<Vehicle> vehicles)
         {
-            for (int i = 0; i < vehicles.Length; i++)
+            for (int i = 0; i < vehicles.Count; i++)
             {
-                for (int j = i + 1; j < vehicles.Length; j++)
+                for (int j = i + 1; j < vehicles.Count; j++)
                 {
                     if (vehicles[i].RegistrationNumber.Equals(
                             vehicles[j].RegistrationNumber, StringComparison.OrdinalIgnoreCase))
