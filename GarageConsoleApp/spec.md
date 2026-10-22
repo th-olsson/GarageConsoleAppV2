@@ -1,4 +1,4 @@
-# Garage 1.0
+# Garage 2.0
 ## Sammanfattning
 Applikationen ska simulera ett garage där det går att parkera fordon, hämta ut fordon, se efter vilka fordon som finns där, och vilka egenskaper de har. Allt i en konsol-applikation med huvudmeny och undermenyer.
 
@@ -8,11 +8,14 @@ Garaget måste som minimum ha:
 - Ett antal subklasser till fordon
 - Ett användarvänligt gränssnitt för att interagera med garagets funktionalitet
 * * *
+## Skillnader mot Garage 1.0
+- Garage ska använda en privat `List<Vehicle>` i stället för en array
+- Förbjudet: array internt i Garage, generics (till exempel `Garage<T>`), LINQ och enhetstester
+* * *
 ## Kravspecifikation
 ### Garage
 - Klassen behöver inte ärva från någon annan klass eller implementera någon annan interface
-- Använd ej `List<Vehicle>` internt i Garage-klassen
-- [x] Samlingen av fordon ska internt i klassen hanteras som en privat array.
+- [ ] Samlingen av fordon ska internt i klassen hanteras som en privat `List<Vehicle>`
 - [x] Vid instansieringen av ett nytt garage måste kapaciteten anges som argument till konstruktorn.
 ### Vehicle
 - [x] Fordon ska implementeras som klassen Vehicle och subklasser till den
@@ -40,8 +43,6 @@ Det ska gå att
     - Alla lastbilar
     - Alla röda fordon
 - [x] Användaren ska få feedback på att saker gått bra eller dåligt. Till exempel när vi  
-        parkerat ett fordon vill vi få en bekräftelse på att fordonet är parkerat. Om det inte går  
-        vill användaren få veta varför.
 ***
 ### Gränssnitt
 Programmet ska vara en konsolapplikation med ett textbaserat användargränssnitt.
